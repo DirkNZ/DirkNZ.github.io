@@ -1,0 +1,927 @@
+<!-- This code is manually deployed to the HTML element in https://commonintent.com.au/wp-admin/post.php?post=11614&action=edit -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NamePup - Meta Ads Naming Convention Generator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif !important;
+        margin: 20px !important;
+      }
+
+      h1 {
+        font-family: HKGrotesk-Regular, sans-serif !important;
+        text-align: center !important;
+      }
+
+      h2 {
+        text-align: center !important;
+      }
+
+      /* Tab styles */
+      .tab {
+        overflow: hidden !important;
+        border-bottom: 1px solid #ccc !important;
+        text-align: center !important;
+      }
+
+      .tab button {
+        background-color: inherit !important;
+        display: inline-block !important;
+        border: none !important;
+        outline: none !important;
+        cursor: pointer !important;
+        padding: 14px 16px !important;
+        transition: 0.3s !important;
+        font-size: 17px !important;
+        margin: 0 5px !important;
+      }
+
+      .tab button:hover {
+        background-color: #ddd !important;
+      }
+
+      .tab button.active {
+        background-color: #ccc !important;
+      }
+
+      /* Tab content */
+      .tabcontent {
+        display: none !important;
+        padding: 20px 0 !important;
+        border-top: none !important;
+      }
+
+      /* Show active tab */
+      .active-tab {
+        display: block !important;
+      }
+
+      /* Form styles */
+      .form-group {
+        margin-bottom: 15px !important;
+        text-align: center !important;
+      }
+
+      label {
+        display: inline-block !important;
+        width: 250px !important;
+        vertical-align: middle !important;
+        text-align: right !important;
+        padding-right: 10px !important;
+      }
+
+      select,
+      input[type="text"],
+      button {
+        padding: 5px !important;
+        font-size: 16px !important;
+      }
+
+      select {
+        width: 220px !important;
+      }
+
+      button {
+        margin-top: 10px !important;
+        padding: 10px 20px !important;
+        margin-right: 10px !important;
+      }
+
+      .result {
+        margin-top: 10px !important;
+        width: 80% !important;
+        padding: 5px !important;
+        font-size: 16px !important;
+      }
+
+      .success-message {
+        color: green !important;
+        margin-top: 5px !important;
+        font-size: 14px !important;
+        opacity: 0 !important;
+        transition: opacity 0.5s !important;
+      }
+
+      .show-message {
+        opacity: 1 !important;
+      }
+
+      .utm-code {
+        margin-top: 40px !important;
+        font-size: 14px !important;
+        text-align: center !important;
+      }
+
+      .utm-code code {
+        background-color: #f4f4f4 !important;
+        padding: 5px !important;
+        display: inline-block !important;
+      }
+
+      .select2-container--default
+        .select2-selection--single
+        .select2-selection__clear {
+        right: 10px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+      }
+
+      .select2-container--default .select2-selection--single {
+        padding-right: 25px !important;
+      }
+
+      .form-container {
+        max-width: 800px !important;
+        margin: 0 auto !important;
+        padding: 20px !important;
+      }
+
+      /* Prevent all uppercase on Wordpress theme */
+      #campaignResult,
+      #adSetResult,
+      #adLevelResult {
+        text-transform: none !important;
+      }
+
+      /* Error message style */
+      .error-message {
+        color: red !important;
+      }
+    </style>
+
+    <!-- Include Select2 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Include jQuery (required for Select2) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  </head>
+  <body>
+    <div class="form-container">
+      <h1>NamePup</h1>
+      <h2>Meta Ads Naming Convention Generator</h2>
+      <div style="text-align: center; margin-bottom: 20px">
+        <a
+          href="https://docs.google.com/document/d/1Cju46tJz7JxrrsQRo31UuTkT0zkuNCDxdUtfNvQ_xGg/edit"
+          >SOP Link</a
+        >
+      </div>
+      <div></div>
+
+      <div class="tab">
+        <button
+          class="tablinks"
+          onclick="openTab(event, 'Campaign')"
+          id="defaultOpen"
+        >
+          Campaign
+        </button>
+        <button class="tablinks" onclick="openTab(event, 'AdSet')">
+          Ad Set
+        </button>
+        <button class="tablinks" onclick="openTab(event, 'AdLevel')">
+          Ad Level
+        </button>
+      </div>
+
+      <!-- Campaign Tab Content -->
+      <div id="Campaign" class="tabcontent">
+        <div style="text-align: center">
+          <p>* Indicates required value</p>
+        </div>
+
+        <div class="form-group">
+          <label for="funnel">Funnel Placement: *</label>
+          <select id="funnel" class="styled-select">
+            <option value="">Select</option>
+            <option value="TOP">TOP</option>
+            <option value="MID">MID</option>
+            <option value="BOTF">BOTF</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="ad_delivery">Ad Delivery: *</label>
+          <select id="ad_delivery" class="styled-select">
+            <option value="">Select</option>
+            <option value="Always On">Always On</option>
+            <option value="Offers">Offers</option>
+            <option value="Comp">Competition</option>
+            <option value="Competition (Viralsweep)">
+              Competition - Viral Sweep
+            </option>
+            <option value="Advantage +">Advantage +</option>
+            <option value="ADV+ Enh.">Advantage + Enh</option>
+            <option value="Video Views">Video Views</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="campaign_audience">Audience:</label>
+          <select id="campaign_audience">
+            <option value="">Select</option>
+            <option value="Anniversaries Soon">Anniversaries Soon</option>
+            <option value="Art + Interior Design">Art + Interior Design</option>
+            <option value="Art, Museum & Theatre Aficionados">
+              Art, Museum & Theatre Aficionados
+            </option>
+            <option value="Bargain Hunters">Bargain Hunters</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Bio Hackers">Bio Hackers</option>
+            <option value="Business Owners Audience (eCom)">
+              Business Owners Audience (eCom)
+            </option>
+            <option value="Businessman">Businessman</option>
+            <option value="Corporate">Corporate</option>
+            <option value="Design + Architecture / Slow Living">
+              Design + Architecture / Slow Living
+            </option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Environmental / Ethical Consumerism">
+              Environmental / Ethical Consumerism
+            </option>
+            <option value="Everyday Basic Brands">Everyday Basic Brands</option>
+            <option value="Generic Males">Generic Males</option>
+            <option value="Gifts">Gifts</option>
+            <option value="Health & Wellness (General)">
+              Health & Wellness (General)
+            </option>
+            <option value="High End Fashion (OG)">High End Fashion (OG)</option>
+            <option value="Holiday Makers">Holiday Makers</option>
+            <option value="Interior Design/Homewares">
+              Interior Design/Homewares
+            </option>
+            <option value="Luxury Brands">Luxury Brands</option>
+            <option value="Makeup / Celebrity Lover">
+              Makeup / Celebrity Lover
+            </option>
+            <option value="Motherhood / Parenting">
+              Motherhood / Parenting
+            </option>
+            <option value="Performance/Fitness">Performance/Fitness</option>
+            <option value="Size Inclusivity">Size Inclusivity</option>
+            <option value="Skincare">Skincare</option>
+            <option value="Social Activist">Social Activist</option>
+            <option value="Sustainability/Outdoorsperson">
+              Sustainability/Outdoorsperson
+            </option>
+            <option value="Tradies">Tradies</option>
+            <option value="Vegan Audience">Vegan Audience</option>
+            <option value="Yoga / Self Improvement">
+              Yoga / Self Improvement
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="campaign_secondary_audience">Secondary Audience:</label>
+          <select id="campaign_secondary_audience">
+            <option value="">Select</option>
+            <option value="Anniversaries Soon">Anniversaries Soon</option>
+            <option value="Art + Interior Design">Art + Interior Design</option>
+            <option value="Art, Museum & Theatre Aficionados">
+              Art, Museum & Theatre Aficionados
+            </option>
+            <option value="Bargain Hunters">Bargain Hunters</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Bio Hackers">Bio Hackers</option>
+            <option value="Business Owners Audience (eCom)">
+              Business Owners Audience (eCom)
+            </option>
+            <option value="Businessman">Businessman</option>
+            <option value="Corporate">Corporate</option>
+            <option value="Design + Architecture / Slow Living">
+              Design + Architecture / Slow Living
+            </option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Environmental / Ethical Consumerism">
+              Environmental / Ethical Consumerism
+            </option>
+            <option value="Everyday Basic Brands">Everyday Basic Brands</option>
+            <option value="Generic Males">Generic Males</option>
+            <option value="Gifts">Gifts</option>
+            <option value="Health & Wellness (General)">
+              Health & Wellness (General)
+            </option>
+            <option value="High End Fashion (OG)">High End Fashion (OG)</option>
+            <option value="Holiday Makers">Holiday Makers</option>
+            <option value="Interior Design/Homewares">
+              Interior Design/Homewares
+            </option>
+            <option value="Luxury Brands">Luxury Brands</option>
+            <option value="Makeup / Celebrity Lover">
+              Makeup / Celebrity Lover
+            </option>
+            <option value="Motherhood / Parenting">
+              Motherhood / Parenting
+            </option>
+            <option value="Performance/Fitness">Performance/Fitness</option>
+            <option value="Size Inclusivity">Size Inclusivity</option>
+            <option value="Skincare">Skincare</option>
+            <option value="Social Activist">Social Activist</option>
+            <option value="Sustainability/Outdoorsperson">
+              Sustainability/Outdoorsperson
+            </option>
+            <option value="Tradies">Tradies</option>
+            <option value="Vegan Audience">Vegan Audience</option>
+            <option value="Yoga / Self Improvement">
+              Yoga / Self Improvement
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="product">Product:</label>
+          <select id="campaign_product" class="styled-select">
+            <option value="">Select</option>
+            <option value="Brand">Brand</option>
+            <option value="[Specific Collection]">Specific Collection</option>
+            <option value="[Specific Product]">Specific Product</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="age">Age:</label>
+          <select id="age" class="styled-select">
+            <option value="">Select</option>
+            <option value="18-24 Y/O">18-24 Y/O</option>
+            <option value="25-34 Y/O">25-34 Y/O</option>
+            <option value="35-44 Y/O">35-44 Y/O</option>
+            <option value="45-54 Y/O">45-54 Y/O</option>
+            <option value="55-64 Y/O">55-64 Y/O</option>
+            <option value="65+">65+</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="location">Location:</label>
+          <select id="location" class="styled-select">
+            <option value="">Select</option>
+            <option value="QLD">QLD</option>
+            <option value="VIC">VIC</option>
+            <option value="NSW">NSW</option>
+            <option value="TAS">TAS</option>
+            <option value="NT">NT</option>
+            <option value="ACT">ACT</option>
+            <option value="WA">WA</option>
+            <option value="AUS">AUS</option>
+            <option value="NZ">NZ</option>
+            <option value="UK">UK</option>
+            <option value="USA">USA</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="objective">Objective: *</label>
+          <select id="objective" class="styled-select">
+            <option value="">Select</option>
+            <option value="Awareness">Awareness</option>
+            <option value="Conv">Conversions</option>
+            <option value="Engagement">Engagement</option>
+            <option value="Leads">Leads</option>
+            <option value="Traffic">Traffic</option>
+            <option value="Thru Play">Through Play</option>
+          </select>
+        </div>
+
+        <!-- Generate and Copy Buttons with Success Message -->
+        <div class="form-group">
+          <button id="generateBtn" onclick="generateCampaignName()">
+            Generate
+          </button>
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('campaignResult', 'campaignCopyMessage')"
+          >
+            Copy
+          </button>
+          <button onclick="resetForm('Campaign')">Reset</button>
+          <div id="campaignCopyMessage" class="success-message"></div>
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="campaignResult" class="result" />
+        </div>
+      </div>
+
+      <!-- Ad Set Tab Content -->
+      <div id="AdSet" class="tabcontent">
+        <div style="text-align: center">
+          <p>* Indicates required value</p>
+        </div>
+
+        <div class="form-group">
+          <label for="placement">Placement: *</label>
+          <select id="placement" class="styled-select">
+            <option value="">Select</option>
+            <option value="FB">FB</option>
+            <option value="IG">IG</option>
+            <option value="FB+IG">FB+IG</option>
+            <option value="STORIES">Stories</option>
+            <option value="REELS">Reels</option>
+            <option value="S+R">S+R</option>
+            <option value="All Placements">All Placements</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="ad_set_audience">Audience: *</label>
+          <select id="ad_set_audience">
+            <option value="">Select</option>
+            <optgroup label="---TOP---">
+              <option value="">Select</option>
+              <option value="Anniversaries Soon">Anniversaries Soon</option>
+              <option value="Art + Interior Design">
+                Art + Interior Design
+              </option>
+              <option value="Art, Museum & Theatre Aficionados">
+                Art, Museum & Theatre Aficionados
+              </option>
+              <option value="Bargain Hunters">Bargain Hunters</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Bio Hackers">Bio Hackers</option>
+              <option value="Business Owners Audience (eCom)">
+                Business Owners Audience (eCom)
+              </option>
+              <option value="Businessman">Businessman</option>
+              <option value="Corporate">Corporate</option>
+              <option value="Design + Architecture / Slow Living">
+                Design + Architecture / Slow Living
+              </option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Environmental / Ethical Consumerism">
+                Environmental / Ethical Consumerism
+              </option>
+              <option value="Everyday Basic Brands">
+                Everyday Basic Brands
+              </option>
+              <option value="Generic Males">Generic Males</option>
+              <option value="Gifts">Gifts</option>
+              <option value="Health & Wellness (General)">
+                Health & Wellness (General)
+              </option>
+              <option value="High End Fashion (OG)">
+                High End Fashion (OG)
+              </option>
+              <option value="Holiday Makers">Holiday Makers</option>
+              <option value="Interior Design/Homewares">
+                Interior Design/Homewares
+              </option>
+              <option value="Luxury Brands">Luxury Brands</option>
+              <option value="Makeup / Celebrity Lover">
+                Makeup / Celebrity Lover
+              </option>
+              <option value="Motherhood / Parenting">
+                Motherhood / Parenting
+              </option>
+              <option value="Performance/Fitness">Performance/Fitness</option>
+              <option value="Size Inclusivity">Size Inclusivity</option>
+              <option value="Skincare">Skincare</option>
+              <option value="Social Activist">Social Activist</option>
+              <option value="Sustainability/Outdoorsperson">
+                Sustainability/Outdoorsperson
+              </option>
+              <option value="Tradies">Tradies</option>
+              <option value="Vegan Audience">Vegan Audience</option>
+              <option value="Yoga / Self Improvement">
+                Yoga / Self Improvement
+              </option>
+            </optgroup>
+            <optgroup label="---MID---">
+              <option value="WEB/IG/FB/SHOP - 0-30 Days">
+                WEB/IG/FB/SHOP - 0-30 Days
+              </option>
+              <option value="WEB/IG/FB/SHOP - 30-180 Days">
+                WEB/IG/FB/SHOP - 30-180 Days
+              </option>
+              <option value="WEB/IG/FB/SHOP - 180 Days">
+                WEB/IG/FB/SHOP - 180 Days
+              </option>
+            </optgroup>
+            <optgroup label="---BOTF---">
+              <option value="V/ATC - 180 Days">V/ATC - 180 Days</option>
+            </optgroup>
+            <optgroup label="---ADVANTAGE +---">
+              <option value="MIXED-10%">Mixed 10%</option>
+              <option value="MIXED-20%">Mixed 20%</option>
+              <option value="MIXED-30%">Mixed 30%</option>
+              <option value="No Cap (0%)">No Cap 0%</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="gender">Gender (if split at Campaign):</label>
+          <select id="gender" class="styled-select">
+            <option value="">Select</option>
+            <option value="Male Only">Male Only</option>
+            <option value="Female Only">Female Only</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="ad_set_age">Age (if split at Campaign):</label>
+          <select id="ad_set_age" class="styled-select">
+            <option value="">Select</option>
+            <option value="18-24 Y/O">18-24 Y/O</option>
+            <option value="25-34 Y/O">25-34 Y/O</option>
+            <option value="35-44 Y/O">35-44 Y/O</option>
+            <option value="45-54 Y/O">45-54 Y/O</option>
+            <option value="55-64 Y/O">55-64 Y/O</option>
+            <option value="65+">65+</option>
+          </select>
+        </div>
+
+        <!-- Generate and Copy Buttons with Success Message -->
+        <div class="form-group">
+          <button onclick="generateAdSetName()">Generate</button>
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('adSetResult', 'adSetCopyMessage')"
+          >
+            Copy
+          </button>
+          <button onclick="resetForm('AdSet')">Reset</button>
+          <div id="adSetCopyMessage" class="success-message"></div>
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="adSetResult" class="result" />
+        </div>
+      </div>
+
+      <!-- Ad Level Tab Content -->
+      <div id="AdLevel" class="tabcontent">
+        <div style="text-align: center">
+          <p>* Indicates required value</p>
+        </div>
+
+        <div class="form-group">
+          <label for="ad_level_placement">Placement: *</label>
+          <select id="ad_level_placement" class="styled-select">
+            <option value="">Select</option>
+            <option value="REELS">Reels</option>
+            <option value="FEED">Feed</option>
+            <option value="STORIES">Stories</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="product">Product: *</label>
+          <select id="product" class="styled-select">
+            <option value="">Select</option>
+            <option value="Brand">Brand</option>
+            <option value="[Specific Collection]">Specific Collection</option>
+            <option value="[Specific Product]">Specific Product</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="ad_type">Ad Type: *</label>
+          <select id="ad_type" class="styled-select">
+            <option value="">Select</option>
+            <option value="Video">Video</option>
+            <option value="Static">Static</option>
+            <option value="Carousel">Carousel</option>
+            <option value="Dynamic Catalog">Dynamic Catalog</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cta">CTA: *</label>
+          <select id="cta" class="styled-select">
+            <option value="">Select</option>
+            <option value="LEARN">Learn more</option>
+            <option value="SHOP">Shop now</option>
+            <option value="SIGN-UP">Sign up</option>
+            <option value="SUBSCRIBE">Subscribe</option>
+            <option value="CONTACT">Contact us</option>
+            <option value="DOWNLOAD">Download</option>
+            <option value="OFFER">Get offer</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="url_destination">URL Destination: *</label>
+          <select id="url_destination" class="styled-select">
+            <option value="">Select</option>
+            <option value="Homepage">Home page</option>
+            <option value="Product page">Product page</option>
+            <option value="Collection page">Collection page</option>
+            <option value="Offer page">Offer page</option>
+            <option value="Sign up page">Sign up page</option>
+            <option value="Contact page">Contact page</option>
+          </select>
+        </div>
+
+        <!-- Generate and Copy Buttons with Success Message -->
+        <div class="form-group">
+          <button onclick="generateAdLevelName()">Generate</button>
+          <button
+            class="copy-button"
+            onclick="copyToClipboard('adLevelResult', 'adLevelCopyMessage')"
+          >
+            Copy
+          </button>
+          <button onclick="resetForm('AdLevel')">Reset</button>
+          <div id="adLevelCopyMessage" class="success-message"></div>
+        </div>
+
+        <div style="text-align: center">
+          <p>
+            Please note, for the Product, Creative and Copy Version parts of the
+            ad name, you will need to update these to the client specific
+            details.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="adLevelResult" class="result" />
+        </div>
+      </div>
+
+      <!-- UTM Code -->
+      <div class="utm-code">
+        <p><strong>UTM Code:</strong></p>
+        <code
+          >utm_source={{site_source_name}}&amp;utm_medium=cpc&amp;utm_campaign={{campaign.name}}&amp;utm_content={{ad.id}}</code
+        >
+      </div>
+    </div>
+
+    <script>
+      // JavaScript for tabs
+      function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+
+        // Hide all tab content
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].classList.remove("active-tab");
+        }
+
+        // Remove active class from all tab links
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].classList.remove("active");
+        }
+
+        // Show the selected tab content and add active class
+        document.getElementById(tabName).classList.add("active-tab");
+        evt.currentTarget.classList.add("active");
+      }
+
+      // Open the default tab
+      window.onload = function () {
+        document.getElementById("defaultOpen").click();
+      };
+
+      // Copy to clipboard function
+      function copyToClipboard(resultId, messageId) {
+        var copyText = document.getElementById(resultId).value;
+        var messageElement = document.getElementById(messageId);
+
+        navigator.clipboard.writeText(copyText).then(
+          function () {
+            // Show success message
+            messageElement.textContent = "Copied!";
+            messageElement.classList.add("show-message");
+
+            // Hide the message after 2 seconds
+            setTimeout(function () {
+              messageElement.classList.remove("show-message");
+            }, 2000);
+          },
+          function (err) {
+            // Show error message
+            messageElement.textContent = "Failed to copy!";
+            messageElement.classList.add("show-message");
+
+            // Hide the message after 2 seconds
+            setTimeout(function () {
+              messageElement.classList.remove("show-message");
+            }, 2000);
+          }
+        );
+      }
+
+      // Generate Campaign Name
+      function generateCampaignName() {
+        var location = document.getElementById("location").value;
+        var funnel = document.getElementById("funnel").value;
+        var ad_delivery = document.getElementById("ad_delivery").value;
+        var audience = document.getElementById("campaign_audience").value;
+        var secondary_audience = document.getElementById(
+          "campaign_secondary_audience"
+        ).value;
+        var product = document.getElementById("campaign_product").value;
+        var age = document.getElementById("age").value;
+        var objective = document.getElementById("objective").value;
+
+        var messageElement = document.getElementById("campaignCopyMessage");
+
+        // Check if Funnel Placement, Ad Delivery, and Objective fields are empty
+        if (funnel === "" || ad_delivery === "" || objective === "") {
+          var errorMessage = "Please fill in the following required fields: ";
+          if (funnel === "") errorMessage += "Funnel Placement, ";
+          if (ad_delivery === "") errorMessage += "Ad Delivery, ";
+          if (objective === "") errorMessage += "Objective, ";
+
+          // Remove trailing comma and space
+          errorMessage = errorMessage.slice(0, -2);
+
+          messageElement.textContent = errorMessage;
+          messageElement.classList.add("show-message", "error-message");
+
+          document.getElementById("campaignResult").value = "";
+          return; // Stop execution if Funnel Placement is not selected
+        }
+
+        var parts = [];
+
+        parts.push(funnel + " - " + ad_delivery);
+
+        if (audience) {
+          parts.push(" (" + audience + ")");
+        }
+        if (secondary_audience) {
+          parts.push(" (" + secondary_audience + ")");
+        }
+        if (product) {
+          parts.push(" (" + product + ")");
+        }
+        if (age) {
+          parts.push(" (" + age + ")");
+        }
+        if (location) {
+          parts.push(" " + location);
+        }
+        if (objective) {
+          parts.push(" - " + objective);
+        }
+
+        var campaign_name = parts.join("");
+
+        // Set the generated name in the result field
+        messageElement.classList.remove("show-message", "error-message");
+        messageElement.textContent = ""; // Clear message after hiding
+        document.getElementById("campaignResult").value = campaign_name;
+      }
+
+      // Generate Ad Set Name
+      function generateAdSetName() {
+        var placement = document.getElementById("placement").value;
+        var audience = document.getElementById("ad_set_audience").value;
+        var gender = document.getElementById("gender").value;
+        var age = document.getElementById("ad_set_age").value;
+
+        var messageElement = document.getElementById("adSetCopyMessage");
+
+        // Check if Placement and Audience fields are empty
+        if (placement === "" || audience === "") {
+          var errorMessage = "Please fill in the following required fields: ";
+          if (placement === "") errorMessage += "Placement, ";
+          if (audience === "") errorMessage += "Audience, ";
+
+          // Remove trailing comma and space
+          errorMessage = errorMessage.slice(0, -2);
+
+          messageElement.textContent = errorMessage;
+          messageElement.classList.add("show-message", "error-message");
+
+          document.getElementById("adSetResult").value = "";
+          return; // Stop execution if Funnel Placement is not selected
+        }
+
+        var parts = [];
+
+        parts.push(placement + " - " + audience);
+
+        if (gender) {
+          parts.push(" (" + gender + ")");
+        }
+        if (age) {
+          parts.push(" (" + age + ")");
+        }
+
+        var ad_set_name = parts.join("");
+
+        // Set the generated name in the result field
+        messageElement.classList.remove("show-message", "error-message");
+        messageElement.textContent = ""; // Clear message after hiding
+        document.getElementById("adSetResult").value = ad_set_name;
+      }
+
+      // Generate Ad Level Name
+      function generateAdLevelName() {
+        var placement = document.getElementById("ad_level_placement").value;
+        var product = document.getElementById("product").value;
+        var ad_type = document.getElementById("ad_type").value;
+        var cta = document.getElementById("cta").value;
+        var url_destination = document.getElementById("url_destination").value;
+
+        var messageElement = document.getElementById("adLevelCopyMessage");
+
+        // Check if Placement and Audience fields are empty
+        if (
+          placement === "" ||
+          product === "" ||
+          ad_type === "" ||
+          cta === "" ||
+          url_destination === ""
+        ) {
+          var errorMessage = "Please fill in the following required fields: ";
+          if (placement === "") errorMessage += "Placement, ";
+          if (product === "") errorMessage += "Product, ";
+          if (ad_type === "") errorMessage += "Ad Type, ";
+          if (cta === "") errorMessage += "CTA, ";
+          if (url_destination === "") errorMessage += "URL Destination, ";
+
+          // Remove trailing comma and space
+          errorMessage = errorMessage.slice(0, -2);
+
+          messageElement.textContent = errorMessage;
+          messageElement.classList.add("show-message", "error-message");
+
+          document.getElementById("adLevelResult").value = "";
+          return; // Stop execution if Funnel Placement is not selected
+        }
+
+        var ad_level_name =
+          placement +
+          " - " +
+          product +
+          " - " +
+          ad_type +
+          " - [Creative] x [Copy] - " +
+          cta +
+          " > " +
+          url_destination;
+
+        // Set the generated name in the result field
+        messageElement.classList.remove("show-message", "error-message");
+        messageElement.textContent = ""; // Clear message after hiding
+        document.getElementById("adLevelResult").value = ad_level_name;
+      }
+
+      // Reset the form values
+      function resetForm(tabId) {
+        var tabContent = document.getElementById(tabId);
+        var inputs = tabContent.getElementsByTagName("input");
+        var selects = tabContent.getElementsByTagName("select");
+
+        // Clear all input fields
+        for (var i = 0; i < inputs.length; i++) {
+          if (inputs[i].type === "text") {
+            inputs[i].value = "";
+          }
+        }
+
+        // Reset all select fields
+        for (var i = 0; i < selects.length; i++) {
+          selects[i].selectedIndex = 0;
+
+          // If the select element is a select2 element, reset it
+          if ($(selects[i]).hasClass("select2-hidden-accessible")) {
+            $(selects[i]).val(null).trigger("change"); // Reset select2 element
+          }
+        }
+
+        // Clear the result field
+        var resultField = tabContent.querySelector(".result");
+        if (resultField) {
+          resultField.value = "";
+        }
+      }
+
+      $(document).ready(function () {
+        // Apply Select2 to the non-searchable selects for consistent styling
+        $(".styled-select").select2({
+          minimumResultsForSearch: Infinity, // Disables the search functionality
+        });
+        // Apply Select2 to the campaign audience dropdown
+        $("#campaign_audience").select2({
+          placeholder: "Select an audience",
+          allowClear: true,
+        });
+        // Apply Select2 to the campaign audience dropdown
+        $("#campaign_secondary_audience").select2({
+          placeholder: "Select an audience",
+          allowClear: true,
+        });
+        // Apply Select2 to the ad set audience dropdown
+        $("#ad_set_audience").select2({
+          placeholder: "Select an audience",
+          allowClear: true,
+        });
+      });
+    </script>
+  </body>
+</html>
